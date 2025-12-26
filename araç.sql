@@ -1,11 +1,11 @@
 -- ==============================================
--- ARA« K›RALAMA S›STEM› - VER›TABANI
+-- ARA√á K√ùRALAMA S√ùSTEM√ù - VER√ùTABANI
 -- ==============================================
 
 USE master;
 GO
 
--- Eski veritaban˝n˝ sil
+-- Eski veritaban√Ωn√Ω sil
 IF EXISTS (SELECT * FROM sys.databases WHERE name = 'CarRentalSystem')
 BEGIN
     ALTER DATABASE CarRentalSystem SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
@@ -13,7 +13,7 @@ BEGIN
 END
 GO
 
--- Yeni veritaban˝ olu˛tur
+-- Yeni veritaban√Ω olu√ætur
 CREATE DATABASE CarRentalSystem;
 GO
 
@@ -24,14 +24,14 @@ GO
 -- TABLOLAR
 -- ==============================================
 
--- AraÁ Kategorileri
+-- Ara√ß Kategorileri
 CREATE TABLE Categories (
     CategoryID INT IDENTITY(1,1) PRIMARY KEY,
     CategoryName NVARCHAR(50) NOT NULL,
     DailyPrice DECIMAL(10,2) NOT NULL
 );
 
--- AraÁlar
+-- Ara√ßlar
 CREATE TABLE Vehicles (
     VehicleID INT IDENTITY(1,1) PRIMARY KEY,
     Brand NVARCHAR(50) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE Vehicles (
     FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
 );
 
--- M¸˛teriler
+-- M√º√æteriler
 CREATE TABLE Customers (
     CustomerID INT IDENTITY(1,1) PRIMARY KEY,
     FullName NVARCHAR(100) NOT NULL,
@@ -72,63 +72,64 @@ CREATE TABLE Rentals (
 GO
 
 -- ==============================================
--- BAﬁLANGI« VER›LER›
+-- BA√ûLANGI√á VER√ùLER√ù
 -- ==============================================
 
 -- Kategoriler
 INSERT INTO Categories (CategoryName, DailyPrice) VALUES
 (N'Ekonomi', 300.00),
 (N'Orta Segment', 500.00),
-(N'L¸ks', 1000.00),
+(N'L√ºks', 1000.00),
 (N'SUV', 800.00),
 (N'Ticari', 600.00);
 
--- AraÁlar
+-- Ara√ßlar
 INSERT INTO Vehicles (Brand, Model, Year, Plate, CategoryID, Color, IsAvailable) VALUES
 (N'Fiat', N'Egea', 2023, N'34 ABC 123', 1, N'Beyaz', 1),
-(N'Renault', N'Clio', 2022, N'34 DEF 456', 1, N'K˝rm˝z˝', 1),
+(N'Renault', N'Clio', 2022, N'34 DEF 456', 1, N'K√Ωrm√Ωz√Ω', 1),
 (N'Toyota', N'Corolla', 2023, N'06 GHI 789', 2, N'Gri', 1),
 (N'Volkswagen', N'Passat', 2023, N'35 JKL 012', 2, N'Siyah', 1),
 (N'BMW', N'5 Serisi', 2024, N'34 MNO 345', 3, N'Beyaz', 1),
-(N'Mercedes', N'E-Class', 2024, N'06 PRS 678', 3, N'G¸m¸˛', 1),
+(N'Mercedes', N'E-Class', 2024, N'06 PRS 678', 3, N'G√ºm√º√æ', 1),
 (N'Honda', N'CR-V', 2023, N'34 TUV 901', 4, N'Mavi', 1),
 (N'Nissan', N'Qashqai', 2022, N'35 WXY 234', 4, N'Beyaz', 0),
 (N'Ford', N'Transit', 2023, N'34 ZAB 567', 5, N'Beyaz', 1),
 (N'Hyundai', N'H100', 2022, N'06 CDE 890', 5, N'Gri', 1);
 
--- M¸˛teriler
+-- M√º√æteriler
 INSERT INTO Customers (FullName, Phone, Email, LicenseNumber, Address) VALUES
-(N'Ali Y˝lmaz', N'0532-111-2233', N'ali@email.com', N'A12345678', N'›stanbul, Kad˝kˆy'),
-(N'Ay˛e Demir', N'0533-222-3344', N'ayse@email.com', N'B87654321', N'Ankara, «ankaya'),
-(N'Mehmet Kaya', N'0534-333-4455', N'mehmet@email.com', N'C11223344', N'›zmir, Kar˛˝yaka'),
-(N'Fatma ÷z', N'0535-444-5566', N'fatma@email.com', N'D55667788', N'Antalya, Muratpa˛a'),
-(N'Ahmet «elik', N'0536-555-6677', N'ahmet@email.com', N'E99887766', N'Bursa, Nil¸fer');
+(N'Ali Y√Ωlmaz', N'0532-111-2233', N'ali@email.com', N'A12345678', N'√ùstanbul, Kad√Ωk√∂y'),
+(N'Ay√æe Demir', N'0533-222-3344', N'ayse@email.com', N'B87654321', N'Ankara, √áankaya'),
+(N'Mehmet Kaya', N'0534-333-4455', N'mehmet@email.com', N'C11223344', N'√ùzmir, Kar√æ√Ωyaka'),
+(N'Fatma √ñz', N'0535-444-5566', N'fatma@email.com', N'D55667788', N'Antalya, Muratpa√æa'),
+(N'Ahmet √áelik', N'0536-555-6677', N'ahmet@email.com', N'E99887766', N'Bursa, Nil√ºfer');
 
--- ÷rnek Kiralamalar
--- ›lk kiralama (Aktif)
+-- √ñrnek Kiralamalar
+-- √ùlk kiralama (Aktif)
 DECLARE @Price1 DECIMAL(10,2) = (SELECT DailyPrice FROM Categories WHERE CategoryID = 1);
 INSERT INTO Rentals (VehicleID, CustomerID, RentalDate, PlannedReturnDate, DailyPrice, Status)
 VALUES (1, 1, GETDATE(), DATEADD(DAY, 5, GETDATE()), @Price1, 'Active');
 
--- ›kinci kiralama (Tamamlanm˝˛)
+-- √ùkinci kiralama (Tamamlanm√Ω√æ)
 DECLARE @Price2 DECIMAL(10,2) = (SELECT DailyPrice FROM Categories WHERE CategoryID = 3);
 INSERT INTO Rentals (VehicleID, CustomerID, RentalDate, ReturnDate, PlannedReturnDate, DailyPrice, Status)
 VALUES (5, 2, DATEADD(DAY, -10, GETDATE()), DATEADD(DAY, -3, GETDATE()), DATEADD(DAY, -3, GETDATE()), @Price2, 'Completed');
 
--- ‹Á¸nc¸ kiralama (Aktif - SUV kiralanm˝˛)
+-- √ú√ß√ºnc√º kiralama (Aktif - SUV kiralanm√Ω√æ)
 DECLARE @Price3 DECIMAL(10,2) = (SELECT DailyPrice FROM Categories WHERE CategoryID = 4);
 INSERT INTO Rentals (VehicleID, CustomerID, RentalDate, PlannedReturnDate, DailyPrice, Status, Notes)
-VALUES (8, 3, DATEADD(DAY, -2, GETDATE()), DATEADD(DAY, 4, GETDATE()), @Price3, 'Active', N'Havaliman˝ teslim');
+VALUES (8, 3, DATEADD(DAY, -2, GETDATE()), DATEADD(DAY, 4, GETDATE()), @Price3, 'Active', N'Havaliman√Ω teslim');
 
--- Kiralanm˝˛ araÁlar˝ g¸ncelle
+-- Kiralanm√Ω√æ ara√ßlar√Ω g√ºncelle
 UPDATE Vehicles SET IsAvailable = 0 WHERE VehicleID IN (1, 8);
 GO
 
 PRINT '==============================================';
-PRINT 'CarRentalSystem Veritaban˝ Haz˝r!';
+PRINT 'CarRentalSystem Veritaban√Ω Haz√Ωr!';
 PRINT 'Kategoriler: 5 adet';
-PRINT 'AraÁlar: 10 adet';
-PRINT 'M¸˛teriler: 5 adet';
+PRINT 'Ara√ßlar: 10 adet';
+PRINT 'M√º√æteriler: 5 adet';
 PRINT 'Kiralamalar: 3 adet';
 PRINT '==============================================';
+
 GO
